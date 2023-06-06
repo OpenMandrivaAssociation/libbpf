@@ -37,6 +37,7 @@ The following are the high-level features supported by libbpf:
 * Supports BPF CO-RE mechanism, enabling BPF developers to write portable BPF
   programs that can be compiled once and run across different kernel versions.
 
+%if "%{name}" != "%{libname}"
 %package -n %{libname}
 Summary: Library for working with BPF object files
 Group: System/Libraries
@@ -64,6 +65,7 @@ The following are the high-level features supported by libbpf:
 
 * Supports BPF CO-RE mechanism, enabling BPF developers to write portable BPF
   programs that can be compiled once and run across different kernel versions.
+%endif
 
 %package -n %{devname}
 Summary: Development files for %{name}
