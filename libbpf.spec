@@ -1,10 +1,11 @@
+%global build_ldflags %{build_ldflags} -Wl,--undefined-version
 %define major 1
 %define libname %mklibname bpf
 %define devname %mklibname bpf -d
 %define sdevname %mklibname bpf -d -s
 
 Name: libbpf
-Version: 1.2.0
+Version: 1.3.0
 Release: 1
 Source0: https://github.com/libbpf/libbpf/archive/refs/tags/v%{version}.tar.gz
 Summary: Library for working with BPF object files
