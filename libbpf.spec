@@ -5,7 +5,7 @@
 %define sdevname %mklibname bpf -d -s
 
 Name: libbpf
-Version: 1.3.0
+Version: 1.4.5
 Release: 1
 Source0: https://github.com/libbpf/libbpf/archive/refs/tags/v%{version}.tar.gz
 Summary: Library for working with BPF object files
