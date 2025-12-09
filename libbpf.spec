@@ -12,6 +12,8 @@ Summary: Library for working with BPF object files
 URL: https://github.com/libbpf/libbpf
 License: GPL
 Group: System/Libraries
+
+BuildRequires: make
 BuildRequires: pkgconfig(libelf)
 
 %description
