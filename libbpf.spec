@@ -5,8 +5,8 @@
 %define sdevname %mklibname bpf -d -s
 
 Name: libbpf
-Version: 1.6.3
-Release: 2
+Version: 1.7.0
+Release: 1
 Source0: https://github.com/libbpf/libbpf/archive/refs/tags/v%{version}.tar.gz
 Summary: Library for working with BPF object files
 URL: https://github.com/libbpf/libbpf
@@ -17,7 +17,7 @@ BuildRequires: make
 BuildRequires: pkgconfig(libelf)
 
 %patchlist
-https://github.com/libbpf/libbpf/commit/cc7760ce9a4acacd6be3f7025c393cf6a84e6eb8.patch
+#https://github.com/libbpf/libbpf/commit/cc7760ce9a4acacd6be3f7025c393cf6a84e6eb8.patch
 
 %description
 libbpf is a C-based library containing a BPF loader that takes compiled BPF
