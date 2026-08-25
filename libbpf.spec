@@ -1,5 +1,6 @@
 %global build_ldflags %{build_ldflags} -Wl,--undefined-version
 %define major 1
+%define oldlibname %mklibname bpf 1
 %define libname %mklibname bpf
 %define devname %mklibname bpf -d
 %define sdevname %mklibname bpf -d -s
@@ -15,9 +16,6 @@ Group: System/Libraries
 
 BuildRequires: make
 BuildRequires: pkgconfig(libelf)
-
-%patchlist
-#https://github.com/libbpf/libbpf/commit/cc7760ce9a4acacd6be3f7025c393cf6a84e6eb8.patch
 
 %description
 libbpf is a C-based library containing a BPF loader that takes compiled BPF
@@ -47,6 +45,7 @@ The following are the high-level features supported by libbpf:
 %package -n %{libname}
 Summary: Library for working with BPF object files
 Group: System/Libraries
+%rename %{oldlibname}
 
 %description -n %{libname}
 libbpf is a C-based library containing a BPF loader that takes compiled BPF
@@ -98,36 +97,6 @@ Static libraries for %{name}.
 
 %install
 %make_install -C src CFLAGS="%{optflags}" CC="%{__cc}"
-
-# (tpg) strip LTO from "LLVM IR bitcode" files
-check_convert_bitcode() {
-    printf '%s\n' "Checking for LLVM IR bitcode"
-    llvm_file_name=$(realpath ${1})
-    llvm_file_type=$(file ${llvm_file_name})
-
-    if printf '%s\n' "${llvm_file_type}" | grep -q "LLVM IR bitcode"; then
-# recompile without LTO
-	clang %{optflags} -fno-lto -Wno-unused-command-line-argument -x ir ${llvm_file_name} -c -o ${llvm_file_name}
-    elif printf '%s\n' "${llvm_file_type}" | grep -q "current ar archive"; then
-	printf '%s\n' "Unpacking ar archive ${llvm_file_name} to check for LLVM bitcode components."
-# create archive stage for objects
-	archive_stage=$(mktemp -d)
-	archive=${llvm_file_name}
-	cd ${archive_stage}
-	ar x ${archive}
-	for archived_file in $(find -not -type d); do
-	    check_convert_bitcode ${archived_file}
-	    printf '%s\n' "Repacking ${archived_file} into ${archive}."
-	    ar r ${archive} ${archived_file}
-	done
-	ranlib ${archive}
-	cd ..
-    fi
-}
-
-for i in $(find %{buildroot} -type f -name "*.[ao]"); do
-    check_convert_bitcode ${i}
-done
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}*
